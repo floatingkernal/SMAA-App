@@ -2,6 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
+
+import Login from "../views/Login.vue";
+import Registration from "../views/Registration.vue";
+
+import Catalog from "../views/Catalog.vue";
+import ProductInfo from "../views/ProductInfo.vue";
+import ShoppingCart from "../views/ShoppingCart.vue";
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -9,6 +17,31 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: "/registration",
+    name: "Registration",
+    component: Registration,
+  },
+  {
+    path: "/catalog",
+    name: "Catalog",
+    component: Catalog,
+  },
+  {
+    path: "/product-info",
+    name: "ProductInfo",
+    component: ProductInfo,
+  },
+  {
+    path: "/shopping-cart",
+    name: "ShoppingCart",
+    component: ShoppingCart,
   },
   {
     path: '/about',
