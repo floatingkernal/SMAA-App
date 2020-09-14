@@ -17,11 +17,11 @@
       <v-row justify="center">
         <template v-for="(category,i) in categories">
           <v-col :key="i">
-            <v-card :key="i" max-width="300" :to="category.to">
+            <v-card :key="i" max-width="" :to="category.to">
               <v-card-text class="text-center">
                 <v-img height="300" width="300" :src="category.src" contain />
               </v-card-text>
-              <h3>{{category.name}}</h3>
+              <v-card-title>{{category.name}}</v-card-title>
             </v-card>
           </v-col>
         </template>
