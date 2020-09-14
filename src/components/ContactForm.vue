@@ -22,7 +22,7 @@
           <ValidationProvider v-slot="{ errors }" name="Message" rules="required">
             <v-textarea filled v-model="message" :error-messages="errors" label="Message" required></v-textarea>
           </ValidationProvider>
-          <v-btn color="red accent-1" class="mr-4" @click="submit">submit</v-btn>
+          <v-btn color="error" class="mr-4" @click="submit">submit</v-btn>
           <v-btn @click="clear">clear</v-btn>
         </v-container>
       </v-form>
