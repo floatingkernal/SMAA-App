@@ -1,41 +1,43 @@
 <template>
-  <v-card width="400" class="mx-auto mt-10">
-    <v-card-title>
-      <h1>Login</h1>
-    </v-card-title>
-    <v-card-text>
-      <ValidationObserver ref="observer">
-        <v-form>
-          <ValidationProvider v-slot="{ errors }" name="Username" rules="required">
-            <v-text-field
-              v-model="username"
-              :error-messages="errors"
-              label="Username"
-              required
-              prepend-icon="mdi-account-circle"
-            ></v-text-field>
-          </ValidationProvider>
-          <ValidationProvider v-slot="{ errors }" name="Password" rules="required">
-            <v-text-field
-              v-model="password"
-              :error-messages="errors"
-              label="Password"
-              :type="showPass? 'text' : 'password'"
-              prepend-icon="mdi-lock"
-              :append-icon="showPass? 'mdi-eye' : 'mdi-eye-off'"
-              @click:append="showPass = !showPass"
-            />
-          </ValidationProvider>
-        </v-form>
-      </ValidationObserver>
-    </v-card-text>
-    <v-divider />
-    <v-card-actions>
-      <v-btn color="success" @click="submit">Login</v-btn>
-      <v-spacer />
-      <v-btn color="error" to="/registration">Register</v-btn>
-    </v-card-actions>
-  </v-card>
+  <div>
+    <v-card width="400" class="mx-auto mt-10">
+      <v-card-title>
+        <h1>Login</h1>
+      </v-card-title>
+      <v-card-text>
+        <ValidationObserver ref="observer">
+          <v-form>
+            <ValidationProvider v-slot="{ errors }" name="Username" rules="required">
+              <v-text-field
+                v-model="username"
+                :error-messages="errors"
+                label="Username"
+                required
+                prepend-icon="mdi-account-circle"
+              ></v-text-field>
+            </ValidationProvider>
+            <ValidationProvider v-slot="{ errors }" name="Password" rules="required">
+              <v-text-field
+                v-model="password"
+                :error-messages="errors"
+                label="Password"
+                :type="showPass? 'text' : 'password'"
+                prepend-icon="mdi-lock"
+                :append-icon="showPass? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPass = !showPass"
+              />
+            </ValidationProvider>
+          </v-form>
+        </ValidationObserver>
+      </v-card-text>
+      <v-divider />
+      <v-card-actions>
+        <v-btn color="success" @click="submit">Login</v-btn>
+        <v-spacer />
+        <v-btn color="error" to="/registration">Register</v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
 <script>

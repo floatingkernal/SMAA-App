@@ -1,10 +1,10 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <Header />
     <v-sheet
       max-height="600"
     >
-      <v-container style="height: 120px;"></v-container>
+      <v-container style="height: 120px"></v-container>
     </v-sheet>
     <router-view />
     <v-main>
@@ -30,3 +30,14 @@ export default {
   }),
 };
 </script>
+
+<style scoped>
+.app {
+  max-width: 1180px;
+  margin:auto;
+  
+}
+.app * {
+  background-color: #fff3e6;
+}
+</style>

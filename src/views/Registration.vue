@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-card class="mx-auto mt-10">
     <v-card-title>
       <h1>Registration Form</h1>
@@ -33,6 +34,7 @@
       <v-btn @click="submit">Save</v-btn>
     </v-card-actions>
   </v-card>
+</div>
 </template>
 
 <script>

@@ -9,15 +9,13 @@
       </v-carousel-item>
     </v-carousel>
     <v-row justify="center">
-      <v-card flat>
-        <h2>Shop By Categories</h2>
-      </v-card>
+      <h2>Shop By Categories</h2>
     </v-row>
     <v-container fluid>
       <v-row justify="center">
         <template v-for="(category,i) in categories">
           <v-col :key="i">
-            <v-card :key="i" max-width="" :to="category.to">
+            <v-card :key="i" max-width :to="category.to">
               <v-card-text class="text-center">
                 <v-img height="300" width="300" :src="category.src" contain />
               </v-card-text>
