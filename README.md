@@ -1,5 +1,7 @@
-# smaa-app2
+# SMAA Application
+E-commerce web application for SMAA Corporartion 
 
+ 
 ## Project setup
 ```
 npm install
