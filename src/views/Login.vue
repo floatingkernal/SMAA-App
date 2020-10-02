@@ -6,14 +6,15 @@
       </v-card-title>
       <v-card-text>
         <ValidationObserver ref="observer">
-          <v-form>
-            <ValidationProvider v-slot="{ errors }" name="Username" rules="required">
+          <v-form @keyup.native.enter="submit">
+            <ValidationProvider v-slot="{ errors }" name="Email" rules="required">
               <v-text-field
-                v-model="username"
+                v-model="email"
                 :error-messages="errors"
-                label="Username"
+                label="Email"
                 required
                 prepend-icon="mdi-account-circle"
+                type="email"
               ></v-text-field>
             </ValidationProvider>
             <ValidationProvider v-slot="{ errors }" name="Password" rules="required">
@@ -37,6 +38,32 @@
         <v-btn color="error" to="/registration">Register</v-btn>
       </v-card-actions>
     </v-card>
+    <v-dialog
+      v-model="dialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Error occured
+        </v-card-title>
+
+        <v-card-text>
+          {{error}}
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog = false"
+          >
+            Okay
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -48,6 +75,8 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
 setInteractionMode("eager");
 
@@ -64,15 +93,24 @@ export default {
   },
   data: () => ({
     showPass: false,
-    username: "",
+    email: "",
     password: "",
+    error: "",
+    dialog: false,
   }),
   methods: {
     submit() {
       this.$refs.observer.validate().then((res) => {
         if (res) {
           // TODO: submit form here
-          console.log(this.username + this.password);
+          // console.log(this.username + this.password);
+          firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(data =>{
+            console.log(data)
+            this.$router.replace({name:'Home'})
+          }).catch(error => {
+            this.dialog = true;
+            this.error = error.message;
+          })
         }
       });
     },

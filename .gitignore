@@ -2,6 +2,12 @@
 node_modules
 /dist
 
+# hiding config api keys
+*fb.js
+
+# Hiding CSV Files
+*CSV-files/*
+*CSV-files
 
 # local env files
 .env.local

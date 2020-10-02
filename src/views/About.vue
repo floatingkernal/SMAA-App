@@ -57,6 +57,7 @@
 <script>
 import ContactForm from "../components/ContactForm";
 export default {
+  name: "About",
   components: {
     ContactForm,
   },

@@ -1,40 +1,40 @@
 <template>
-<div>
-  <v-card class="mx-auto mt-10">
-    <v-card-title>
-      <h1>Registration Form</h1>
-    </v-card-title>
-    <v-divider />
-    <v-card-text>
-      <ValidationObserver ref="observer">
-        <v-form>
-          <v-container>
-            <div v-for="(row,i) in info" :key="i">
-              <v-row>
-                <h3 class="mx-2">{{i}}</h3>
-              </v-row>
-              <v-row class="d-flex">
-                <TextInput
-                  class="mx-2 flex-grow-1"
-                  v-for="(item,j) in row"
-                  :key="j"
-                  :v-model="item.value"
-                  :name="item.label"
-                  :rules="item.rules"
-                  :type="item.type"
-                />
-              </v-row>
-            </div>
-          </v-container>
-        </v-form>
-      </ValidationObserver>
-    </v-card-text>
-    <v-divider />
-    <v-card-actions>
-      <v-btn @click="submit">Save</v-btn>
-    </v-card-actions>
-  </v-card>
-</div>
+  <div>
+    <v-card class="mx-auto mt-10">
+      <v-card-title>
+        <h1>Registration Form</h1>
+      </v-card-title>
+      <v-divider />
+      <v-card-text>
+        <ValidationObserver ref="observer">
+          <v-form>
+            <v-container>
+              <div v-for="(row,i) in info" :key="i">
+                <v-row>
+                  <h3 class="mx-2">{{i}}</h3>
+                </v-row>
+                <v-row class="d-flex">
+                  <TextInput
+                    class="mx-2 flex-grow-1"
+                    v-for="(item,j) in row"
+                    :key="j"
+                    :v-model="item.value"
+                    :name="item.label"
+                    :rules="item.rules"
+                    :type="item.type"
+                  />
+                </v-row>
+              </div>
+            </v-container>
+          </v-form>
+        </ValidationObserver>
+      </v-card-text>
+      <v-divider />
+      <v-card-actions>
+        <v-btn @click="submit">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -42,7 +42,6 @@ import { extend, ValidationObserver } from "vee-validate";
 import { email } from "vee-validate/dist/rules";
 
 import TextInput from "@/components/TextInput";
-
 
 extend("password", {
   params: ["target"],

@@ -1,15 +1,6 @@
 <template>
   <ValidationProvider tag="div" :rules="rules" :name="name" :vid="vid" v-slot="{ errors }">
-    <!-- <v-text-field
-      filled
-      :v-model="currentValue"
-      :error-messages="errors[0]"
-      :label="name"
-      :type="type"
-    /> -->
     <v-text-field filled :type="type" v-model="currentValue" :label="name" :error-messages="errors[0]" />
-    <!-- <v-input :type"type" v-model="currentValue" -->
-    <!-- <span>{{ errors[0] }}</span> -->
   </ValidationProvider>
 </template>
 
