@@ -1,13 +1,8 @@
 <template>
   <v-app class="app">
     <Header />
-    <v-sheet
-      max-height="600"
-    >
-      <v-container style="height: 120px"></v-container>
-    </v-sheet>
+    <v-main class="mt-5">
     <router-view />
-    <v-main>
       <!-- <HelloWorld /> -->
     </v-main>
   </v-app>
