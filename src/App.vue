@@ -23,6 +23,9 @@ export default {
   data: () => ({
     //
   }),
+  created() {
+    this.$store.dispatch('loadData')
+  }
 };
 </script>
 

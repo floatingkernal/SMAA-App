@@ -5,6 +5,9 @@ node_modules
 # hiding config api keys
 *fb.js
 
+# secret stuff hidden
+*secrets*
+
 # Hiding CSV Files
 *CSV-files/*
 *CSV-files

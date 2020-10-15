@@ -5,7 +5,9 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 
 import firebase from "firebase/app";
-import fbConfig from "./fb";
+import fbConfig from "./secrets/fb";
+
+
 
 import axios from "axios";
 Vue.prototype.$axios = axios;
@@ -13,6 +15,7 @@ Vue.config.productionTip = false;
 
 
 firebase.initializeApp(fbConfig.config);
+
 
 let app;
 firebase.auth().onAuthStateChanged(() => {
