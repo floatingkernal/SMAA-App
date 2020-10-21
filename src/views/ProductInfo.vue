@@ -18,7 +18,9 @@
       <v-card-title> {{ desc }} </v-card-title>
       <div class="d-flex flex-wrap">
         <v-card id="image" class="mx-3 pa-6" max-width="350" @wheel="wheelMove">
+          <v-skeleton-loader v-if="image == ''" width="300" height="300" type="image"/>
           <ImageMagnifier
+            v-else
             :src="image"
             :zoom-src="image"
             width="300"
@@ -78,6 +80,8 @@
 
 <script>
 import { ImageMagnifier } from "vue-image-magnifier";
+import firebase from "firebase/app";
+import 'firebase/storage'
 
 export default {
   name: "ProductInfo",
@@ -85,8 +89,8 @@ export default {
     ImageMagnifier,
   },
   data: () => ({
-    image: "https://picsum.photos/500/500?image=250",
-    zoomSize: 200,
+    image: "",
+    zoomSize: 150,
 
     itemNo: "",
     desc: "",
@@ -109,6 +113,8 @@ export default {
     // window.addEventListener("wheel", this.wheelMove);
 
     this.loadData();
+  },
+  mounted() {
   },
 
   destroyed() {
@@ -159,10 +165,18 @@ export default {
         this.MinOrdQty = row.MinOrdQty;
         this.OrdMultiple = row.OrdMultiple;
         this.DoNotSell = row.DoNotSell;
+
+        this.loadImage()
       } else {
         this.itemNotFound = true;
       }
     },
+    loadImage() {
+      const imgUrl = 'products/' + this.itemNo + '.jpg'
+      firebase.storage().ref().child(imgUrl).getDownloadURL().then((url) => {
+        this.image = url
+        })
+    }
   },
 };
 </script>
