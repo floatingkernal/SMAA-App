@@ -1,84 +1,109 @@
 <template>
-  <div class="d-flex flex-wrap mx-auto justify-center justify-sm-end">
-    <div v-for="item in items" :key="item.id">
-      <!-- {{ item }} -->
-      <ProductCard :title="item.name" :desc="item.desc" :img="item.img" :to="item.to" :pricePerUnit="item.pricePerUnit" :pricePerCase="item.pricePerCase" :itemPerPack="item.itemPerPack" />
+  <div>
+    <v-pagination
+      class="my-4 mx-auto"
+      v-model="pageNum"
+      :length="Math.ceil(sheetRows.length / itemsPerPage)"
+      :total-visible="7"
+      color="red"
+      @input="changePage"
+    />
+    <div class="d-flex flex-wrap mx-auto justify-center justify-sm-start">
+      <div v-for="item in items" :key="item.id">
+        <ProductCard
+          :title="item.name"
+          :desc="item.desc"
+          :img="item.img"
+          :to="item.to"
+          :pricePerUnit="item.pricePerUnit"
+          :pricePerCase="item.pricePerCase"
+          :itemPerPack="item.itemPerPack"
+        />
+      </div>
+      <v-pagination
+        class="my-4 mx-auto"
+        v-model="pageNum"
+        :length="Math.ceil(sheetRows.length / itemsPerPage)"
+        :total-visible="7"
+        color="red"
+        @input="changePage"
+      />
     </div>
-    <!-- <ProductCard />
-    <ProductCard />
-    <ProductCard />
-    <ProductCard />
-    <ProductCard />
-    <ProductCard />-->
   </div>
 </template>
 
 <script>
-import ProductCard from "@/components/ProductCard";
+import firebase from "firebase/app";
+import "firebase/storage";
+
 export default {
   name: "Catalog",
 
   components: {
-    ProductCard,
+    ProductCard: () => import(/* webpackChunkName: "ProductCard" */ "@/components/ProductCard")
   },
   data: () => ({
-    items: [
-      {
-        name: "Item1",
-        desc: "Discription of Item 1",
-        img: "https://picsum.photos/500/500?image=1",
-        to: "/product-info/TestProd",
-        pricePerUnit: 0.01,
-        pricePerCase: 1,
-        itemPerPack: 1,
-      },
-      {
-        name: "Item2",
-        desc: "Discription of Item 2",
-        img: "https://picsum.photos/500/500?image=2",
-        to: "/product-info/SV-90588",
-        pricePerUnit: 0.02,
-        pricePerCase: 2,
-        itemPerPack: 2,
-      },
-      {
-        name: "Item3",
-        desc: "Discription of Item 3",
-        img: "https://picsum.photos/500/500?image=3",
-        to: "/product-info/SH-87007",
-        pricePerUnit: 0.10,
-        pricePerCase: 3,
-        itemPerPack: 3,
-      },
-      {
-        name: "Item4",
-        desc: "Discription of Item 4",
-        img: "https://picsum.photos/500/500?image=4",
-        to: "/",
-        pricePerUnit: 0.4,
-        pricePerCase: 4,
-        itemPerPack: 6,
-      },
-      {
-        name: "Item5",
-        desc: "Discription of Item 5",
-        img: "https://picsum.photos/500/500?image=5",
-        to: "/",
-        pricePerUnit: 0.75,
-        pricePerCase: 5,
-        itemPerPack: 12,
-      },
-      {
-        name: "Item6",
-        desc: "Discription of Item 6",
-        img: "https://picsum.photos/500/500?image=6",
-        to: "/",
-        pricePerUnit: 1.0,
-        pricePerCase: 6,
-        itemPerPack: 124,
-      },
-    ],
+    items: [],
+    pageNum: 0,
+    itemsPerPage: 20,
+    sheetRows: [],
   }),
+  computed: {
+    lengthOfPages: () => {
+      return this.sheetRows.length / this.itemsPerPage;
+    },
+  },
+  mounted() {
+    this.sheetRows = this.$store.state.sheetRows;
+    this.loadData();
+  },
+  watch: {
+    "$route.params.pageNum"() {
+      // this.changePage(to)
+      this.loadData();
+    },
+  },
+  methods: {
+    async changePage(e) {
+      this.$vuetify.goTo(0);
+      // this.pageNum = e
+      this.$router.push("/catalog/" + e);
+      this.loadData();
+    },
+    async loadData() {
+      this.items = [];
+      this.pageNum = parseInt(this.$route.params.pageNum);
+
+      this.sheetRows
+        .slice(
+          (this.pageNum - 1) * this.itemsPerPage,
+          this.itemsPerPage * this.pageNum
+        )
+        .forEach((row) => {
+          const item = {
+            name: row.Description,
+            desc: row.Item,
+            img: "",
+            to: "/product-info/" + row.Item,
+            pricePerUnit: Number(row["STD Price"]),
+            pricePerCase: 0,
+            itemPerPack: Number(row.QtyPerPack),
+          };
+          this.items.push(item);
+          this.setImgUrl(item);
+        });
+    },
+    setImgUrl: async (item) => {
+      const itemUrl = "products/" + item.desc + ".jpg";
+      await firebase
+        .storage()
+        .ref()
+        .child(itemUrl)
+        .getDownloadURL()
+        .then((u) => (item.img = u))
+        .catch(() => (item.img = ""));
+    },
+  },
 };
 </script>
 

@@ -18,13 +18,19 @@
       <v-card-title> {{ desc }} </v-card-title>
       <div class="d-flex flex-wrap">
         <v-card id="image" class="mx-3 pa-6" max-width="350" @wheel="wheelMove">
-          <v-skeleton-loader v-if="image == ''" width="300" height="300" type="image"/>
+          <v-skeleton-loader
+            v-if="image == ''"
+            width="300"
+            height="300"
+            type="image"
+          />
           <ImageMagnifier
             v-else
             :src="image"
             :zoom-src="image"
             width="300"
-            height="300"
+            max-height='300'
+            align="center"
             zoom-width="500"
             zoom-height="500"
             :maskWidth="zoomSize"
@@ -81,7 +87,7 @@
 <script>
 import { ImageMagnifier } from "vue-image-magnifier";
 import firebase from "firebase/app";
-import 'firebase/storage'
+import "firebase/storage";
 
 export default {
   name: "ProductInfo",
@@ -108,19 +114,10 @@ export default {
     itemNotFound: false,
   }),
   created() {
-    // ImageMagnifier.addEventListener('scroll', this.onImgScroll);
-    // window.addEventListener("keydown", this.keydown);
-    // window.addEventListener("wheel", this.wheelMove);
 
-    this.loadData();
   },
   mounted() {
-  },
-
-  destroyed() {
-    //   ImageMagnifier.removeEventListener('scroll', this.onImgScroll);
-    // window.removeEventListener("keydown", this.keydown);
-    // window.removeEventListener("wheel", this.wheelMove);
+    this.loadData();
   },
   methods: {
     wheelMove(e) {
@@ -148,7 +145,7 @@ export default {
       this.error = false;
       this.loadData();
     },
-    loadData() {
+    async loadData() {
       const prodId = this.$route.params.prodId;
       const items = this.$store.state.sheetItems;
       if (!items) {
@@ -166,17 +163,22 @@ export default {
         this.OrdMultiple = row.OrdMultiple;
         this.DoNotSell = row.DoNotSell;
 
-        this.loadImage()
+        this.loadImage();
       } else {
         this.itemNotFound = true;
       }
     },
-    loadImage() {
-      const imgUrl = 'products/' + this.itemNo + '.jpg'
-      firebase.storage().ref().child(imgUrl).getDownloadURL().then((url) => {
-        this.image = url
-        })
-    }
+    async loadImage() {
+      const imgUrl1 = "products/" + this.itemNo + ".jpg";
+      firebase
+        .storage()
+        .ref()
+        .child(imgUrl1)
+        .getDownloadURL()
+        .then((url) => {
+          this.image = url;
+        });
+    },
   },
 };
 </script>

@@ -42,22 +42,22 @@ export default {
       items: [
         {
           title: "See our full Catalog",
-          link: "/catalog",
+          link: "/catalog/1",
           src: require("@/assets/home_slider/full.jpg"),
         },
         {
           title: "Our Fall Collection",
-          link: "/catalog",
+          link: "/catalog/1",
           src: require("@/assets/home_slider/fall.jpg"),
         },
         {
           title: "Our Winter Collection",
-          link: "/catalog",
+          link: "/catalog/1",
           src: require("@/assets/home_slider/winter.jpg"),
         },
         {
           title: "Our New Arivals",
-          link: "/catalog",
+          link: "/catalog/1",
           src: require("@/assets/home_slider/new.jpg"),
         },
       ],
@@ -66,55 +66,55 @@ export default {
           name: "Winter items",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
         {
           name: "Houseware Line",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
         {
           name: "Starionary Line",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
         {
           name: "Cell Phone",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
         {
           name: "Summer Items",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
         {
           name: "Bathroom & Kitchen",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
         {
           name: "Hardware",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
         {
           name: "Party Stuff",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
         {
           name: "Health & Beuty",
           src:
             "https://www.dollarama.com/media/1fc0697c-94d3-4a79-b3e6-b68ca5b9dccd/VC5b5g/Composer/HomePage/Dollarama/Departments/BTS%20Dept%20Tile.jpg",
-          to: "/catalog",
+          to: "/catalog/1",
         },
       ],
     };
