@@ -2,38 +2,31 @@
   <v-app class="app">
     <Header />
     <v-main class="mt-5">
-    <router-view />
-      <!-- <HelloWorld /> -->
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-// import HelloWorld from "./components/HelloWorld";
-import Header from "./components/Header"
+import Header from "./components/Header";
 
 export default {
   name: "App",
 
   components: {
-    // HelloWorld,
     Header,
   },
 
-  data: () => ({
-    //
-  }),
   created() {
-    this.$store.dispatch('loadData')
-  }
+    this.$store.dispatch("loadData");
+  },
 };
 </script>
 
 <style scoped>
 .app {
   max-width: 1180px;
-  margin:auto;
-  
+  margin: auto;
 }
 .app * {
   background-color: #fff3e6;

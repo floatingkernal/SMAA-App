@@ -13,21 +13,21 @@
               <v-card-title class="headline">SMAA Corporation</v-card-title>
               <v-card-subtitle>
                 <p>
-                  <v-icon color="red">mdi-map-marker</v-icon>5250 Finch Ave East, Unit 7 Scarborough, ON, M1S 5A4
+                  <v-icon color="red">mdi-map-marker</v-icon>5250 Finch Ave
+                  East, Unit 7 Scarborough, ON, M1S 5A4
                 </p>
                 <p>
                   <v-icon color="red">mdi-email</v-icon>
                   <a href="mailto:smaacorp@yahoo.com">smaacorp@yahoo.com</a>
                 </p>
                 <p>
-                  <v-icon color="red">mdi-deskphone</v-icon>Office: 416-849-(SMAA) 7622
+                  <v-icon color="red">mdi-deskphone</v-icon>Office:
+                  416-849-(SMAA) 7622
                 </p>
                 <p>
                   <v-icon color="red">mdi-cellphone</v-icon>Cell: 416-274-8256
                 </p>
-                <p>
-                  <v-icon color="red">mdi-printer</v-icon>Fax: 416-849-0282
-                </p>
+                <p><v-icon color="red">mdi-printer</v-icon>Fax: 416-849-0282</p>
               </v-card-subtitle>
             </v-card-text>
           </v-card>
@@ -40,7 +40,7 @@
                 width="300"
                 height="400"
                 frameborder="0"
-                style="border:0;"
+                style="border: 0"
                 allowfullscreen
                 aria-hidden="false"
                 tabindex="0"

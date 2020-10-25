@@ -9,14 +9,14 @@
         <ValidationObserver ref="observer">
           <v-form>
             <v-container>
-              <div v-for="(row,i) in info" :key="i">
+              <div v-for="(row, i) in info" :key="i">
                 <v-row>
-                  <h3 class="mx-2">{{i}}</h3>
+                  <h3 class="mx-2">{{ i }}</h3>
                 </v-row>
                 <v-row class="d-flex">
                   <TextInput
                     class="mx-2 flex-grow-1"
-                    v-for="(item,j) in row"
+                    v-for="(item, j) in row"
                     :key="j"
                     :v-model="item.value"
                     :name="item.label"

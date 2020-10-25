@@ -2,10 +2,10 @@
   <v-tooltip bottom>
     <template v-slot:activator="{ on, attrs }">
       <v-btn icon :to="to" v-bind="attrs" v-on="on">
-        <v-icon>{{icon}}</v-icon>
+        <v-icon>{{ icon }}</v-icon>
       </v-btn>
     </template>
-    <span>{{tooltip}}</span>
+    <span>{{ tooltip }}</span>
   </v-tooltip>
 </template>
 

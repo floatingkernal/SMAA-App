@@ -31,7 +31,6 @@
 
       <HeaderButton icon="mdi-heart" tooltip="Product Info" to="/product-info/headerProd" v-if="loggedIn" />
       <HeaderButton icon="mdi-login" tooltip="Log In" to="/login" v-if="!loggedIn" />
-      <!-- <HeaderButton icon="mdi-logout" tooltip="Log Out" @click.native="logout" v-if="loggedIn" /> -->
       <v-tooltip bottom v-if="loggedIn">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon @click="logout" v-bind="attrs" v-on="on">
@@ -65,7 +64,6 @@ export default {
       this.mobileView = window.innerWidth <= 500;
     },
     logout() {
-      // console.log("LOGGING OUT");
       firebase
         .auth()
         .signOut()
@@ -76,7 +74,6 @@ export default {
     },
     setupFirebase() {
       firebase.auth().onAuthStateChanged((user) => {
-        // console.log(user);
         if (user) this.loggedIn = true;
         else this.loggedIn = false;
       });

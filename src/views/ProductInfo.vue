@@ -17,7 +17,13 @@
     <v-card class="mx-1 py-3" v-else>
       <v-card-title> {{ desc }} </v-card-title>
       <div class="d-flex flex-wrap">
-        <v-card id="image" class="mx-3 pa-6" max-width="350" @wheel="wheelMove">
+        <v-card
+          id="image"
+          class="mx-3 pa-6"
+          max-width="350"
+          @wheel="wheelMove"
+          @click.stop="displayFullImg"
+        >
           <v-skeleton-loader
             v-if="image == ''"
             width="300"
@@ -29,7 +35,7 @@
             :src="image"
             :zoom-src="image"
             width="300"
-            max-height='300'
+            max-height="300"
             align="center"
             zoom-width="500"
             zoom-height="500"
@@ -38,6 +44,9 @@
             class="justify-center"
           />
         </v-card>
+        <v-dialog v-model="fullImage" max-width="1000">
+          <v-img :src="image" contain />
+        </v-dialog>
         <v-card class="flex-grow-1 ma-3" min-width="300">
           <v-card-title class="d-flex justify-space-between">
             ${{ StdPrice }}/item
@@ -97,6 +106,7 @@ export default {
   data: () => ({
     image: "",
     zoomSize: 150,
+    fullImage: false,
 
     itemNo: "",
     desc: "",
@@ -113,13 +123,15 @@ export default {
     error: false,
     itemNotFound: false,
   }),
-  created() {
-
-  },
+  created() {},
   mounted() {
     this.loadData();
   },
   methods: {
+    displayFullImg() {
+      console.log(innerWidth);
+      window.outerWidth > 500 ? (this.fullImage = true) : false;
+    },
     wheelMove(e) {
       if (e.wheelDeltaY < 0) this.imgZoomIn();
       if (e.wheelDeltaY > 0) this.imgZoomOut();

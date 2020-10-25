@@ -3,7 +3,11 @@
     <ValidationObserver ref="observer">
       <v-form>
         <v-container>
-          <ValidationProvider v-slot="{ errors }" name="Name" rules="required|max:30">
+          <ValidationProvider
+            v-slot="{ errors }"
+            name="Name"
+            rules="required|max:30"
+          >
             <v-text-field
               filled
               v-model="name"
@@ -13,14 +17,38 @@
               required
             ></v-text-field>
           </ValidationProvider>
-          <ValidationProvider v-slot="{ errors }" name="Email" rules="required|email">
-            <v-text-field filled v-model="email" :error-messages="errors" label="E-mail" required></v-text-field>
+          <ValidationProvider
+            v-slot="{ errors }"
+            name="Email"
+            rules="required|email"
+          >
+            <v-text-field
+              filled
+              v-model="email"
+              :error-messages="errors"
+              label="E-mail"
+              required
+            ></v-text-field>
           </ValidationProvider>
           <ValidationProvider name="subject">
-            <v-text-field filled v-model="subject" label="Subject"></v-text-field>
+            <v-text-field
+              filled
+              v-model="subject"
+              label="Subject"
+            ></v-text-field>
           </ValidationProvider>
-          <ValidationProvider v-slot="{ errors }" name="Message" rules="required">
-            <v-textarea filled v-model="message" :error-messages="errors" label="Message" required></v-textarea>
+          <ValidationProvider
+            v-slot="{ errors }"
+            name="Message"
+            rules="required"
+          >
+            <v-textarea
+              filled
+              v-model="message"
+              :error-messages="errors"
+              label="Message"
+              required
+            ></v-textarea>
           </ValidationProvider>
           <v-btn color="error" class="mr-4" @click="submit">submit</v-btn>
           <v-btn @click="clear">clear</v-btn>
@@ -74,6 +102,7 @@ export default {
         console.log(res);
         if (res) {
           // TODO: submit form here
+          alert("This feature is not Available yet.");
         }
       });
     },

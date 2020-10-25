@@ -1,6 +1,18 @@
 <template>
-  <ValidationProvider tag="div" :rules="rules" :name="name" :vid="vid" v-slot="{ errors }">
-    <v-text-field filled :type="type" v-model="currentValue" :label="name" :error-messages="errors[0]" />
+  <ValidationProvider
+    tag="div"
+    :rules="rules"
+    :name="name"
+    :vid="vid"
+    v-slot="{ errors }"
+  >
+    <v-text-field
+      filled
+      :type="type"
+      v-model="currentValue"
+      :label="name"
+      :error-messages="errors[0]"
+    />
   </ValidationProvider>
 </template>
 

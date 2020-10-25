@@ -7,7 +7,11 @@
       <v-card-text>
         <ValidationObserver ref="observer">
           <v-form @keyup.native.enter="submit">
-            <ValidationProvider v-slot="{ errors }" name="Email" rules="required">
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="Email"
+              rules="required"
+            >
               <v-text-field
                 v-model="email"
                 :error-messages="errors"
@@ -17,14 +21,18 @@
                 type="email"
               ></v-text-field>
             </ValidationProvider>
-            <ValidationProvider v-slot="{ errors }" name="Password" rules="required">
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="Password"
+              rules="required"
+            >
               <v-text-field
                 v-model="password"
                 :error-messages="errors"
                 label="Password"
-                :type="showPass? 'text' : 'password'"
+                :type="showPass ? 'text' : 'password'"
                 prepend-icon="mdi-lock"
-                :append-icon="showPass? 'mdi-eye' : 'mdi-eye-off'"
+                :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="showPass = !showPass"
               />
             </ValidationProvider>
@@ -38,27 +46,18 @@
         <v-btn color="error" to="/registration">Register</v-btn>
       </v-card-actions>
     </v-card>
-    <v-dialog
-      v-model="dialog"
-      max-width="290"
-    >
+    <v-dialog v-model="dialog" max-width="290">
       <v-card>
-        <v-card-title class="headline">
-          Error occured
-        </v-card-title>
+        <v-card-title class="headline"> Error occured </v-card-title>
 
         <v-card-text>
-          {{error}}
+          {{ error }}
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-          >
+          <v-btn color="green darken-1" text @click="dialog = false">
             Okay
           </v-btn>
         </v-card-actions>
@@ -102,15 +101,17 @@ export default {
     submit() {
       this.$refs.observer.validate().then((res) => {
         if (res) {
-          // TODO: submit form here
-          // console.log(this.username + this.password);
-          firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(data =>{
-            console.log(data)
-            this.$router.replace({name:'Home'})
-          }).catch(error => {
-            this.dialog = true;
-            this.error = error.message;
-          })
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(this.email, this.password)
+            .then((data) => {
+              console.log(data);
+              this.$router.replace({ name: "Home" });
+            })
+            .catch((error) => {
+              this.dialog = true;
+              this.error = error.message;
+            });
         }
       });
     },

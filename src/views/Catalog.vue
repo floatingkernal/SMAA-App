@@ -40,7 +40,8 @@ export default {
   name: "Catalog",
 
   components: {
-    ProductCard: () => import(/* webpackChunkName: "ProductCard" */ "@/components/ProductCard")
+    ProductCard: () =>
+      import(/* webpackChunkName: "ProductCard" */ "@/components/ProductCard"),
   },
   data: () => ({
     items: [],
@@ -59,14 +60,12 @@ export default {
   },
   watch: {
     "$route.params.pageNum"() {
-      // this.changePage(to)
       this.loadData();
     },
   },
   methods: {
     async changePage(e) {
       this.$vuetify.goTo(0);
-      // this.pageNum = e
       this.$router.push("/catalog/" + e);
       this.loadData();
     },

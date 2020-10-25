@@ -1,9 +1,14 @@
 <template>
   <div>
     <v-carousel cycle hide-delimiters show-arrows-on-hover height="auto">
-      <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src" aspect-ratio="1.5">
+      <v-carousel-item
+        v-for="(item, i) in items"
+        :key="i"
+        :src="item.src"
+        aspect-ratio="1.5"
+      >
         <h1>
-          {{item.title}}
+          {{ item.title }}
           <v-btn color="red" :to="item.link">Shop Now</v-btn>
         </h1>
       </v-carousel-item>
@@ -13,13 +18,13 @@
     </v-row>
     <v-container fluid>
       <v-row justify="center">
-        <template v-for="(category,i) in categories">
+        <template v-for="(category, i) in categories">
           <v-col :key="i">
             <v-card :key="i" max-width :to="category.to">
               <v-card-text class="text-center">
                 <v-img height="300" width="300" :src="category.src" contain />
               </v-card-text>
-              <v-card-title>{{category.name}}</v-card-title>
+              <v-card-title>{{ category.name }}</v-card-title>
             </v-card>
           </v-col>
         </template>
@@ -29,14 +34,8 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: "Home",
-  components: {
-    // HelloWorld
-  },
   data() {
     return {
       items: [
