@@ -1,8 +1,18 @@
 <template>
   <div>
-    <v-app-bar app color="#1c1c1c" dark shrink-on-scroll prominent fade-img-on-scroll>
+    <v-app-bar
+      app
+      color="#1c1c1c"
+      dark
+      shrink-on-scroll
+      prominent
+      fade-img-on-scroll
+    >
       <template v-slot:img="{ props }">
-        <v-img v-bind="props" gradient="to top right, rgba(236,55,55,.7), rgba(28,28,28,.7)"></v-img>
+        <v-img
+          v-bind="props"
+          gradient="to top right, rgba(236,55,55,.7), rgba(28,28,28,.7)"
+        ></v-img>
       </template>
 
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
@@ -20,7 +30,7 @@
         <v-tooltip bottom v-if="loggedIn">
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon to="/shopping-cart" v-bind="attrs" v-on="on">
-              <v-badge content="0" color="red">
+              <v-badge :content="cartAmt" color="red" >
                 <v-icon>mdi-cart</v-icon>
               </v-badge>
             </v-btn>
@@ -29,8 +39,18 @@
         </v-tooltip>
       </template>
 
-      <HeaderButton icon="mdi-heart" tooltip="Product Info" to="/product-info/headerProd" v-if="loggedIn" />
-      <HeaderButton icon="mdi-login" tooltip="Log In" to="/login" v-if="!loggedIn" />
+      <HeaderButton
+        icon="mdi-heart"
+        tooltip="Product Info"
+        to="/product-info/headerProd"
+        v-if="loggedIn"
+      />
+      <HeaderButton
+        icon="mdi-login"
+        tooltip="Log In"
+        to="/login"
+        v-if="!loggedIn"
+      />
       <v-tooltip bottom v-if="loggedIn">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon @click="logout" v-bind="attrs" v-on="on">
@@ -39,7 +59,6 @@
         </template>
         <span>Log Out</span>
       </v-tooltip>
-
     </v-app-bar>
   </div>
 </template>
@@ -54,11 +73,18 @@ export default {
   components: {
     HeaderButton,
   },
-  data: () => ({
-    mobileView: true,
-    logo: require("@/assets/logo.png"),
-    loggedIn: false,
-  }),
+  computed: {
+    cartAmt() {
+      return this.$store.state.shoppingCart.length;
+    },
+  },
+  data() {
+    return {
+      mobileView: true,
+      logo: require("@/assets/logo.png"),
+      loggedIn: false,
+    };
+  },
   methods: {
     handleView() {
       this.mobileView = window.innerWidth <= 500;

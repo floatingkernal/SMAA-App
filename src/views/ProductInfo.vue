@@ -54,7 +54,7 @@
               <v-btn icon> <v-icon> mdi-minus</v-icon></v-btn>
               {{ shoppingCart }}
               <v-btn icon> <v-icon> mdi-plus</v-icon></v-btn>
-              <v-btn color="error"> Add to Cart </v-btn>
+              <v-btn color="error" @click="addToCart"> Add to Cart </v-btn>
             </div>
             <div v-else style="color: red">Product Not in Stock</div>
           </v-card-title>
@@ -123,22 +123,21 @@ export default {
     error: false,
     itemNotFound: false,
   }),
-  created() {},
   mounted() {
     this.loadData();
   },
   methods: {
+    addToCart() {
+      const time = Date().now()
+      const item = { itemNo: this.itemNo, qty: this.shoppingCart , time: time};
+      this.$store.commit("updateCart", item);
+    },
     displayFullImg() {
-      console.log(innerWidth);
       window.outerWidth > 500 ? (this.fullImage = true) : false;
     },
     wheelMove(e) {
       if (e.wheelDeltaY < 0) this.imgZoomIn();
       if (e.wheelDeltaY > 0) this.imgZoomOut();
-    },
-    keydown(e) {
-      if (e.key == "ArrowUp") this.imgZoomIn();
-      if (e.key == "ArrowDown") this.imgZoomOut();
     },
     imgZoomIn() {
       const maxHeight = 300;
@@ -149,9 +148,6 @@ export default {
       const maxHeight = 300;
       if (this.zoomSize - 0.01 * maxHeight > 0.1 * maxHeight)
         this.zoomSize -= 0.01 * maxHeight;
-    },
-    onImgScroll(e) {
-      console.log("Scrolling", e);
     },
     refresh() {
       this.error = false;
@@ -175,21 +171,26 @@ export default {
         this.OrdMultiple = row.OrdMultiple;
         this.DoNotSell = row.DoNotSell;
 
+        row.Img ? (this.image = row.Img) : (this.image = null);
+
         this.loadImage();
       } else {
         this.itemNotFound = true;
       }
     },
     async loadImage() {
-      const imgUrl1 = "products/" + this.itemNo + ".jpg";
-      firebase
-        .storage()
-        .ref()
-        .child(imgUrl1)
-        .getDownloadURL()
-        .then((url) => {
-          this.image = url;
-        });
+      if (!this.image) {
+        const imgUrl1 = "products/" + this.itemNo + ".jpg";
+        firebase
+          .storage()
+          .ref()
+          .child(imgUrl1)
+          .getDownloadURL()
+          .then((url) => {
+            this.image = url;
+            this.$store.dispatch("imgUrlSetter", {url:url, itemNo:this.itemNo});
+          });
+      }
     },
   },
 };

@@ -4,7 +4,7 @@
       class="my-4 mx-auto"
       v-model="pageNum"
       :length="Math.ceil(sheetRows.length / itemsPerPage)"
-      :total-visible="7"
+      :total-visible="totalVisible"
       color="red"
       @input="changePage"
     />
@@ -12,19 +12,20 @@
       <div v-for="item in items" :key="item.id">
         <ProductCard
           :title="item.name"
-          :desc="item.desc"
+          :itemNo="item.itemNo"
           :img="item.img"
           :to="item.to"
           :pricePerUnit="item.pricePerUnit"
           :pricePerCase="item.pricePerCase"
           :itemPerPack="item.itemPerPack"
+          :doNotSell="item.doNotSell"
         />
       </div>
       <v-pagination
         class="my-4 mx-auto"
         v-model="pageNum"
         :length="Math.ceil(sheetRows.length / itemsPerPage)"
-        :total-visible="7"
+        :total-visible="totalVisible"
         color="red"
         @input="changePage"
       />
@@ -53,6 +54,10 @@ export default {
     lengthOfPages: () => {
       return this.sheetRows.length / this.itemsPerPage;
     },
+    totalVisible: () => {
+      if (window.outerWidth < 500) return 5;
+      else return 9;
+    },
   },
   mounted() {
     this.sheetRows = this.$store.state.sheetRows;
@@ -60,6 +65,9 @@ export default {
   },
   watch: {
     "$route.params.pageNum"() {
+      this.loadData();
+    },
+    sheetRows: function () {
       this.loadData();
     },
   },
@@ -81,33 +89,42 @@ export default {
         .forEach((row) => {
           const item = {
             name: row.Description,
-            desc: row.Item,
+            itemNo: row.Item,
             img: "",
             to: "/product-info/" + row.Item,
             pricePerUnit: Number(row["STD Price"]),
             pricePerCase: 0,
             itemPerPack: Number(row.QtyPerPack),
+            doNotSell:"",
           };
+          row.Img ? (item.img = row.Img) : (item.img = "");
+          row.DoNotSell ? (item.doNotSell = row.DoNotSell) : (item.doNotSell = "");
+
           this.items.push(item);
           this.setImgUrl(item);
         });
+        // this.saveImgs()
     },
-    setImgUrl: async (item) => {
-      const itemUrl = "products/" + item.desc + ".jpg";
-      await firebase
-        .storage()
-        .ref()
-        .child(itemUrl)
-        .getDownloadURL()
-        .then((u) => (item.img = u))
-        .catch(() => (item.img = ""));
+    async setImgUrl(item) {
+      if (!item.img) {
+        const itemUrl = "products/" + item.itemNo + ".jpg";
+        firebase
+          .storage()
+          .ref()
+          .child(itemUrl)
+          .getDownloadURL()
+          .then((u) => {
+            item.img = u;
+            // this.$store.dispatch("imgUrlSetter", {url:u, itemNo:item.itemNo});
+            // this.$store.commit("setImg", { url: u, itemNo: item.itemNo });
+            // this.$store.commit("setImg", { url: u, itemNo: item.itemNo});
+          })
+          .catch(() => (item.img = ""));
+      }
     },
+    // async saveImgs() {
+    //   this.items.forEach((item) => (this.$store.dispatch("imgUrlSetter", {url: item.img, itemNo: item.itemNo})))
+    // }
   },
 };
 </script>
-
-<style>
-body {
-  background-color: #fff3e6;
-}
-</style>

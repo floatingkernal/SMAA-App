@@ -18,6 +18,7 @@ export default {
   },
 
   created() {
+    this.$store.dispatch("loadCart");
     this.$store.dispatch("loadData");
   },
 };
@@ -29,6 +30,12 @@ export default {
   margin: auto;
 }
 .app * {
+  background-color: #fff3e6;
+}
+</style>
+
+<style>
+body {
   background-color: #fff3e6;
 }
 </style>
