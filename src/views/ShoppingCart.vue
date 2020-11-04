@@ -10,12 +10,15 @@
       >
         <template v-slot:top>
           <v-toolbar flat>
-            <v-toolbar-title >Order</v-toolbar-title>
+            <v-toolbar-title>Order</v-toolbar-title>
             <v-spacer />
-            <v-toolbar-title class="mx-3">Total: ${{ getTotal }}</v-toolbar-title>
+            <v-toolbar-title class="mx-3"
+              >Total: ${{ getTotal }}</v-toolbar-title
+            >
             <v-btn
+              dark
               class="ma-1"
-              color="error"
+              color="red"
               @click="placeOrder"
               v-if="getTotal > 0"
             >
@@ -61,8 +64,9 @@
             <v-spacer />
             <div class="ma-3">Total: ${{ getTotal }}</div>
             <v-btn
+              dark
               class="ma-1"
-              color="error"
+              color="red"
               @click="placeOrder"
               v-if="getTotal > 0"
             >
@@ -238,7 +242,7 @@ export default {
       // this.$nextTick(this.initialize)
     },
     continueShopping() {
-      this.$router.push("/catalog/")
+      this.$router.push("/catalog/");
     },
     placeOrder() {},
   },
