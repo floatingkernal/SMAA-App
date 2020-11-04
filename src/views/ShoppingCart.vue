@@ -238,7 +238,7 @@ export default {
       // this.$nextTick(this.initialize)
     },
     continueShopping() {
-      this.$router.push("/catalog/1")
+      this.$router.push("/catalog/")
     },
     placeOrder() {},
   },

@@ -2,7 +2,9 @@
   <v-app class="app">
     <Header />
     <v-main class="mt-5">
-      <router-view />
+      <keep-alive include="Catalog">
+        <router-view />
+      </keep-alive>
     </v-main>
   </v-app>
 </template>

@@ -23,7 +23,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "Registration" */ '@/views/Registration'),
   },
   {
-    path: "/catalog/:pageNum",
+    path: "/catalog/",
     name: "Catalog",
     component: () => import(/* webpackChunkName: "Catalog" */ '@/views/Catalog'),
     meta: { requiresAuth: true }
