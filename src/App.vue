@@ -18,11 +18,6 @@ export default {
   components: {
     Header,
   },
-
-  created() {
-    this.$store.dispatch("loadCart");
-    this.$store.dispatch("loadData");
-  },
 };
 </script>
 

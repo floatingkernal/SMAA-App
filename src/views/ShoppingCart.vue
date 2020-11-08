@@ -129,6 +129,9 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+    '$store.state.sheetsLoading'() {
+      this.initialize()
+    }
   },
 
   created() {
@@ -137,6 +140,7 @@ export default {
 
   methods: {
     initialize() {
+      if (this.$store.state.sheetsLoading) return
       this.cart = [];
       const cart = this.$store.state.shoppingCart;
       cart.forEach((item) => {

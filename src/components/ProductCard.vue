@@ -18,8 +18,8 @@
       <v-btn icon v-if="quantity > 0"  @click="remItem">
         <v-icon>mdi-minus</v-icon>
       </v-btn>
-      <v-spacer />
-      <v-card-text v-if="quantity > 0">Quantity:{{ quantity }}</v-card-text>
+      <!-- <v-spacer /> -->
+      <div>{{ quantity > 0 ? "Quantity in Cart: " + quantity : "" }} </div>
       <!-- <v-btn icon @click="wishItem">
         <v-icon v-if="wished">mdi-heart</v-icon>
         <v-icon v-else>mdi-heart-outline</v-icon>

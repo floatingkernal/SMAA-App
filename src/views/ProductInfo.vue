@@ -1,12 +1,6 @@
 <template>
   <div>
-    <v-card class="mx-1 py-3" v-if="error">
-      <v-card-title> Oops, an error occured </v-card-title>
-      <v-card-actions>
-        <v-btn color="error" @click="refresh"> Refresh </v-btn>
-      </v-card-actions>
-    </v-card>
-    <v-card class="mx-1 py-3" v-else-if="itemNotFound">
+    <v-card class="mx-1 py-3" v-if="itemNotFound">
       <v-card-title>
         Oops, item {{ $route.params.prodId }} not found
       </v-card-title>
@@ -126,6 +120,11 @@ export default {
   mounted() {
     this.loadData();
   },
+  watch: {
+    '$store.state.sheetsLoading'() {
+      this.loadData()
+    }
+  },
   methods: {
     addToCart() {
       const time = Date().now()
@@ -149,17 +148,12 @@ export default {
       if (this.zoomSize - 0.01 * maxHeight > 0.1 * maxHeight)
         this.zoomSize -= 0.01 * maxHeight;
     },
-    refresh() {
-      this.error = false;
-      this.loadData();
-    },
-    async loadData() {
+    loadData() {
+      if (this.$store.state.sheetsLoading) return
       const prodId = this.$route.params.prodId;
       const items = this.$store.state.sheetItems;
-      if (!items) {
-        this.error = true;
-        console.log("Error occured when loading items");
-      } else if (prodId in items) {
+      
+      if (prodId in items) {
         const row = this.$store.state.sheetRows[items[prodId]];
         this.itemNo = row.Item;
         this.desc = row.Description;

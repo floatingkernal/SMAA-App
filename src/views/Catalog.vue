@@ -11,9 +11,8 @@
     <v-data-iterator
       :items="items"
       :items-per-page.sync="itemsPerPage"
-      :page="pageNum"
+      :page.sync="pageNum"
       :search="search"
-      hide-default-footer
     >
       <template v-slot:header>
         <v-toolbar>
@@ -78,7 +77,7 @@ export default {
     items: [],
     pageNum: 1,
     itemsPerPage: 20,
-
+    pages: 0,
     search: "",
   }),
   computed: {
@@ -92,6 +91,11 @@ export default {
   },
   mounted() {
     this.loadData();
+  },
+  watch: {
+    '$store.state.sheetsLoading'() {
+      this.loadData()
+    }
   },
   methods: {
     rowNum(item) {
@@ -107,6 +111,8 @@ export default {
       this.pageNum = e;
     },
     loadData() {
+      const loading = this.$store.state.sheetsLoading
+      if (loading) return
       this.items = this.$store.state.sheetRows;
       this.$nextTick(() => this.$forceUpdate());
     },
