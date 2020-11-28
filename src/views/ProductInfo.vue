@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-progress-linear v-if="loading" indeterminate color="red" />
     <v-card class="mx-1 py-3" v-if="itemNotFound">
       <v-card-title>
         Oops, item {{ $route.params.prodId }} not found
@@ -98,6 +99,7 @@ export default {
     ImageMagnifier,
   },
   data: () => ({
+    loading: true,
     image: "",
     zoomSize: 150,
     fullImage: false,
@@ -171,6 +173,7 @@ export default {
       } else {
         this.itemNotFound = true;
       }
+      this.loading = false;
     },
     async loadImage() {
       if (!this.image) {

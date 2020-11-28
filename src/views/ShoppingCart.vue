@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-card>
+      <v-progress-linear v-if="loading" indeterminate color="red" />
       <v-data-table
         :headers="headers"
         :items="cart"
@@ -53,9 +54,6 @@
           <v-icon small class="mr-2" @click="decQty(item)"> mdi-minus </v-icon>
           <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
         </template>
-        <template v-slot:no-data>
-          <v-btn color="error" @click="initialize"> Refresh </v-btn>
-        </template>
         <template slot="footer">
           <div class="d-flex justify-end">
             <v-btn class="ma-1" @click="continueShopping">
@@ -86,6 +84,7 @@ import "firebase/storage";
 export default {
   name: "ShoppingCart",
   data: () => ({
+    loading: true,
     dialogDelete: false,
     headers: [
       { text: "Picture", value: "img" },
@@ -159,6 +158,7 @@ export default {
       });
       this.cart.forEach((item) => this.loadImg(item));
       this.cart.forEach((item) => this.saveImg(item));
+      this.loading = false
     },
 
     viewItem(val) {

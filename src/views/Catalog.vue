@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <v-progress-linear v-if="loading" indeterminate color="red" />
     <v-pagination
       class="my-4 mx-auto"
       v-model="pageNum"
@@ -74,6 +75,7 @@ export default {
       import(/* webpackChunkName: "ProductCard" */ "@/components/ProductCard"),
   },
   data: () => ({
+    loading: true,
     items: [],
     pageNum: 1,
     itemsPerPage: 20,
@@ -115,6 +117,7 @@ export default {
       if (loading) return
       this.items = this.$store.state.sheetRows;
       this.$nextTick(() => this.$forceUpdate());
+      this.loading = false;
     },
   },
 };
