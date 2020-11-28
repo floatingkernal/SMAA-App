@@ -1,5 +1,9 @@
 <template>
   <div>
+    <v-alert v-if="error" type="error"> {{ error }} </v-alert>
+    <v-alert v-if="success" type="success">
+      New User Created in backend
+    </v-alert>
     <v-card class="mx-auto mt-10">
       <v-card-title>
         <h1>Registration Form</h1>
@@ -18,7 +22,7 @@
                     class="mx-2 flex-grow-1"
                     v-for="(item, j) in row"
                     :key="j"
-                    :v-model="item.value"
+                    v-model="item.value"
                     :name="item.label"
                     :rules="item.rules"
                     :type="item.type"
@@ -31,18 +35,20 @@
       </v-card-text>
       <v-divider />
       <v-card-actions>
-        <v-btn @click="submit">Save</v-btn>
+        <v-btn dark color="red" @click="submit">Submit</v-btn>
       </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
+import firebase from "firebase/app";
+import "firebase/storage";
+const db = firebase.firestore();
+
 import { extend, ValidationObserver } from "vee-validate";
 import { email } from "vee-validate/dist/rules";
-
 import TextInput from "@/components/TextInput";
-
 extend("password", {
   params: ["target"],
   validate(value, { target }) {
@@ -50,12 +56,10 @@ extend("password", {
   },
   message: "Password confirmation does not match",
 });
-
 extend("email", {
   ...email,
   message: "Email must be valid",
 });
-
 export default {
   name: "Regestration",
   components: {
@@ -63,6 +67,8 @@ export default {
     TextInput,
   },
   data: () => ({
+    error: "",
+    success: false,
     showPass: false,
     rowNames: [
       "Account Information",
@@ -72,7 +78,7 @@ export default {
     ],
     info: {
       Account: [
-        { label: "Username", value: "", rules: "required" },
+        { label: "Email", value: "", rules: "required|email", type: "email" },
         { label: "Password", value: "", rules: "required", type: "password" },
         {
           label: "Confirm Password",
@@ -87,13 +93,12 @@ export default {
         { label: "Last Name", value: "", rules: "required" },
       ],
       Contact: [
-        { label: "Email", value: "", rules: "required|email", type: "email" },
         { label: "Phone", value: "", rules: "required", type: "tel" },
         { label: "Cell Phone", value: "", rules: "", type: "tel" },
         { label: "Fax", value: "", rules: "", type: "tel" },
       ],
       Location: [
-        { label: "Business Name", value: "", rules: "" },
+        { label: "Business Name", value: "", rules: "required" },
         { label: "Address", value: "", rules: "required" },
         { label: "City", value: "", rules: "required" },
         { label: "Postal Code", value: "", rules: "required" },
@@ -101,14 +106,73 @@ export default {
     },
   }),
   methods: {
-    submit() {
-      this.$refs.observer.validate().then((res) => {
-        console.log(res);
-        if (res) {
-          // TODO: submit form here
-          console.log(this.username + this.password);
-        }
-      });
+    async submit(e) {
+      e.preventDefault();
+      this.error = "";
+      const valid = await this.$refs.observer.validate();
+      if (!valid) {
+        console.log("Validation Error");
+        this.error = "Validation Error";
+        return;
+      }
+      const newEmail = this.info.Account[0].value;
+      const newPass = this.info.Account[1].value;
+      const newCustomer = {
+        title: this.info.Personal[0].value,
+        firstName: this.info.Personal[1].value,
+        lastName: this.info.Personal[2].value,
+        mainPhone: this.info.Contact[0].value,
+        cellPhone: this.info.Contact[1].value,
+        fax: this.info.Contact[2].value,
+        businessName: this.info.Location[0].value,
+        address: this.info.Location[1].value,
+        city: this.info.Location[2].value,
+        postalCode: this.info.Location[3].value,
+        validCustomer: false,
+      };
+      // console.log(newEmail, newPass, newCustomer);
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(newEmail, newPass)
+        .then(() => firebase.auth().signOut())
+        .catch((error) => {
+          switch (error.code) {
+            case "auth/email-already-in-use":
+              console.log(`Email address ${newEmail} already in use.`);
+              this.error = `Email address ${newEmail} already in use.`
+              break;
+            case "auth/invalid-email":
+              console.log(`Email address ${newEmail} is invalid.`);
+              this.error = `Email address ${newEmail} is invalid.`
+              break;
+            case "auth/operation-not-allowed":
+              console.log(`Error during sign up.`)
+              this.error = `Error during sign up.`
+              break;
+            case "auth/weak-password":
+              console.log(
+                "Password must be at least 6 characters."
+              );
+                this.error = "Password must be at least 6 characters."
+              break;
+            default:
+              this.error = error.message
+              console.log(error.message);
+              break;
+          }
+        });
+      if (this.error) return
+      await db
+        .collection("customers")
+        .doc(newEmail)
+        .set(newCustomer)
+        .catch(() => {
+          console.log("Error occured when adding new customer");
+          this.error = "Error occured when adding new customer";
+        });
+      if (this.error) return
+      this.success = true;
+      
     },
   },
 };
