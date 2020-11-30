@@ -25,26 +25,32 @@
       <v-spacer></v-spacer>
 
       <HeaderButton icon="mdi-magnify" tooltip="About" to="/about" />
+      <HeaderButton icon="mdi-file-cabinet" tooltip="Orders History" to="/orders" />
+      <!-- <HeaderButton
+        icon="mdi-heart"
+        tooltip="Product Info"
+        to="/product-info/headerProd"
+        v-if="loggedIn"
+      /> -->
 
       <template>
         <v-tooltip bottom v-if="loggedIn">
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon to="/shopping-cart" v-bind="attrs" v-on="on">
+            <div v-if="cartAmt > 0" >
               <v-badge :content="cartAmt" color="red" >
                 <v-icon>mdi-cart</v-icon>
               </v-badge>
+            </div>
+            <div v-else>
+                <v-icon>mdi-cart</v-icon>
+            </div>
             </v-btn>
           </template>
           <span>Shopping Cart</span>
         </v-tooltip>
       </template>
 
-      <HeaderButton
-        icon="mdi-heart"
-        tooltip="Product Info"
-        to="/product-info/headerProd"
-        v-if="loggedIn"
-      />
       <HeaderButton
         icon="mdi-login"
         tooltip="Log In"
@@ -75,7 +81,9 @@ export default {
   },
   computed: {
     cartAmt() {
-      return this.$store.state.shoppingCart.length;
+      const cart = this.$store.state.shoppingCart
+      if (!cart) return 0
+      return cart.length;
     },
   },
   data() {

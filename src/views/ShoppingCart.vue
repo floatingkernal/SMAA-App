@@ -1,5 +1,7 @@
 <template>
   <div>
+    <v-alert v-if="error" type="error"> {{ error }} </v-alert>
+    <v-alert v-if="success" type="success"> {{ success }} </v-alert>
     <v-card>
       <v-progress-linear v-if="loading" indeterminate color="red" />
       <v-data-table
@@ -84,6 +86,8 @@ import "firebase/storage";
 export default {
   name: "ShoppingCart",
   data: () => ({
+    error: '',
+    success: '',
     loading: true,
     dialogDelete: false,
     headers: [
@@ -120,7 +124,7 @@ export default {
     getTotal() {
       let res = 0;
       this.cart.forEach((item) => (res += item.Qty * item.Price));
-      return res;
+      return res.toFixed(2);
     },
   },
 
@@ -139,6 +143,8 @@ export default {
 
   methods: {
     initialize() {
+      this.success = ''
+      this.error = ''
       if (this.$store.state.sheetsLoading) return
       this.cart = [];
       const cart = this.$store.state.shoppingCart;
@@ -166,7 +172,6 @@ export default {
       this.$router.push(to);
     },
     saveImg(item) {
-      // console.log(item);
       const rowNum = this.$store.state.sheetItems[item.ItemNo];
       const rowInfo = this.$store.state.sheetRows[rowNum];
       if (!rowInfo.img || rowInfo.img === "")
@@ -194,7 +199,6 @@ export default {
     },
 
     deleteItem(item) {
-      // console.log(item);
       this.editedIndex = this.cart.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
@@ -248,7 +252,37 @@ export default {
     continueShopping() {
       this.$router.push("/catalog/");
     },
-    placeOrder() {},
+    emptyCart() {
+      this.cart = []
+      this.$store.commit("emptyCart")
+    },
+    async placeOrder() {
+      this.error = ''
+      this.success = ''
+      if (this.cart.length === 0) {
+        this.error = "Cant place empty order"
+        return
+      }
+
+      const today = new Date()
+      const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      const dateTime = date +' '+ time
+
+      const newOrder = {
+        email: firebase.auth().currentUser.email,
+        items: this.cart,
+        totalCost: this.getTotal,
+        timeStamp: dateTime
+      }
+      await firebase.firestore().collection("orders").add(newOrder).catch(err => {
+        console.error(err);
+        this.error = "Opps an error occured. Please try again later"
+      })
+      if (this.error) return
+      this.emptyCart()
+      this.success = "Order has been placed"
+    },
   },
 };
 </script>

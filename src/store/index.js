@@ -23,7 +23,6 @@ export default new Vuex.Store({
 
     shoppingCart: [],
 
-    shoppinCartId: null,
   },
   getters: {
     shoppingCartQty: (state) => (itemNo) => {
@@ -69,6 +68,11 @@ export default new Vuex.Store({
         // }).catch(console.log)
         
       // })
+    },
+    emptyCart: (state) => {
+      const user = firebase.auth().currentUser
+      db.collection("shoppingCarts").doc(user.email).set({cart:[]})
+      state.shoppingCart = []
     },
     setImg: (state, data) => {
       const rownum = state.sheetItems[data.itemNo]
