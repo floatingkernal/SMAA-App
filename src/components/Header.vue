@@ -25,7 +25,7 @@
       <v-spacer></v-spacer>
 
       <HeaderButton icon="mdi-magnify" tooltip="About" to="/about" />
-      <HeaderButton icon="mdi-file-cabinet" tooltip="Orders History" to="/orders" />
+      <HeaderButton v-if="loggedIn" icon="mdi-file-cabinet" tooltip="Orders History" to="/orders" />
       <!-- <HeaderButton
         icon="mdi-heart"
         tooltip="Product Info"
