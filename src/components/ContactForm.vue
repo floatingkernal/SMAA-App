@@ -50,6 +50,7 @@
               required
             ></v-textarea>
           </ValidationProvider>
+          <Recaptcha class='mb-4' :verify="verified = true" :expired="verified = false" />
           <v-btn color="error" class="mr-4" @click="submit">submit</v-btn>
           <v-btn @click="clear">clear</v-btn>
         </v-container>
@@ -66,6 +67,7 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
+import Recaptcha from './Recaptcha.vue';
 
 setInteractionMode("eager");
 
@@ -88,23 +90,34 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Recaptcha,
   },
   data: () => ({
     name: "",
     email: "",
     subject: "",
     message: "",
+    verified: false,
   }),
-
+  created() {
+    this.verified = false
+  },
   methods: {
-    submit() {
-      this.$refs.observer.validate().then((res) => {
-        console.log(res);
-        if (res) {
-          // TODO: submit form here
-          alert("This feature is not Available yet.");
-        }
-      });
+    async submit(e) {
+      e.preventDefault();
+      const valid = await this.$refs.observer.validate()
+      if (!valid) return; 
+      if (!this.verified) {
+        return
+      }
+      // this.$refs.observer.validate().then((res) => {
+      //   console.log(res);
+      //   if (res) {
+      //     // TODO: submit form here
+      //     alert("This feature is not Available yet.");
+      //   }
+      // });
+      alert("This feature is not Available yet.")
     },
     clear() {
       this.name = "";

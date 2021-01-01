@@ -43,6 +43,11 @@
       </v-card-text>
       <v-divider />
       <v-card-actions>
+      <Recaptcha :verify='onVerify' :expired='recaptchaExpired'/>
+      </v-card-actions>
+      <v-divider />
+      <v-card-actions>
+        <br />
         <v-btn color="success" @click="submit">Login</v-btn>
         <v-spacer />
         <!-- <v-btn color="primary" @click="makeAdmin">Make Admin</v-btn> -->
@@ -52,6 +57,7 @@
       </v-card-actions>
     </v-card>
 
+    <!-- ********************************************************************************************************************************************** -->
     <v-layout row justify-center>
       <v-dialog v-model="forgotPwdDialog" persistent max-width="600px">
         <v-card>
@@ -59,7 +65,7 @@
             <span class="headline">Password Reset Email</span>
           </v-card-title>
           <v-card-text>
-            Please type in your email to be reset your passward
+            Please type in your email to be reset your passward and verify the recaptcha
             <ValidationObserver ref="observer1">
               <v-form @keyup.native.enter="sendPwdReset">
                 <ValidationProvider
@@ -78,8 +84,12 @@
                 </ValidationProvider>
               </v-form>
             </ValidationObserver>
-            <!-- <v-text-field label="Email*" required></v-text-field> -->
           </v-card-text>
+          <v-divider />
+      <v-card-actions>
+        <Recaptcha :verify='onVerify' :expired='recaptchaExpired'/>
+      </v-card-actions>
+      <v-divider />
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red darken-1" text @click="close">Close</v-btn>
@@ -100,6 +110,8 @@ import {
   setInteractionMode,
 } from "vee-validate";
 import firebase, { functions } from "firebase/app";
+import Recaptcha from '@/components/Recaptcha'
+
 
 setInteractionMode("eager");
 
@@ -117,6 +129,7 @@ export default {
   components: {
     ValidationObserver,
     ValidationProvider,
+    Recaptcha,
   },
   data: () => ({
     forgotPwdDialog: false,
@@ -126,17 +139,35 @@ export default {
     password: "",
     error: "",
     success: "",
+    verified: false,
   }),
+  created() {
+    this.verified = false
+  },
   methods: {
+    onVerify() {
+      this.verified = true
+    },
+    recaptchaExpired() {
+      this.verified = false
+    },
+
     async submit(e) {
       e.preventDefault();
       this.error = "";
       this.success = "";
+
       const valid = await this.$refs.observer.validate();
       if (!valid) {
         this.error = "Validation error";
         return;
       }
+
+      if (!this.verified) {
+        this.error = "reCAPTCHA not verified"
+        return
+      }
+
       await firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
@@ -151,18 +182,23 @@ export default {
       this.$router.replace({ name: "Home" });
     },
     async sendPwdReset(e) {
+      this.error = '';
+      this.success = '';
       e.preventDefault();
       const valid = await this.$refs.observer1.validate();
       if (!valid) {
         return;
+      }
+      if (!this.verified) {
+        this.error = "reCAPTCHA not verified"
+        return
       }
       await firebase
         .auth()
         .sendPasswordResetEmail(this.pwdResetEmail)
         .catch((err) => {
           console.error(err);
-          this.error =
-            "An error occured when sending your password reset email";
+          this.error = err.message;
         });
       this.close();
       if (this.error) return;
@@ -170,6 +206,7 @@ export default {
       this.pwdResetEmail = "";
     },
     forgotPwd() {
+      console.log(this.siteKey);
       this.forgotPwdDialog = true;
     },
     close() {

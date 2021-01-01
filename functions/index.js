@@ -1,6 +1,10 @@
-import { https } from "firebase-functions";
-import { initializeApp, auth } from "firebase-admin";
-initializeApp();
+// import { https } from "firebase-functions";
+// import { initializeApp, auth } from "firebase-admin";
+const axios = require('axios')
+const functions = require("firebase-functions");
+
+const admin = require("firebase-admin");
+admin.initializeApp();
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -10,12 +14,12 @@ initializeApp();
 //   response.send("Hello from Firebase!");
 // });
 
-
-export const addValidCustomer = https.onCall((data, context) => {
-  return auth()
+exports.addValidCustomer = functions.https.onCall((data, context) => {
+  return admin
+    .auth()
     .getUserByEmail(data.email)
     .then((user) => {
-      return auth().setCustomUserClaims(user.uid, {
+      return admin.auth().setCustomUserClaims(user.uid, {
         validCustomer: true,
       });
     })

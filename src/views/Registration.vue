@@ -35,6 +35,9 @@
       </v-card-text>
       <v-divider />
       <v-card-actions>
+        <Recaptcha :verify='verified = true' :expired='verified = false'/>
+      </v-card-actions>
+      <v-card-actions>
         <v-btn dark color="red" @click="submit">Submit</v-btn>
       </v-card-actions>
     </v-card>
@@ -49,6 +52,7 @@ const db = firebase.firestore();
 import { extend, ValidationObserver } from "vee-validate";
 import { email } from "vee-validate/dist/rules";
 import TextInput from "@/components/TextInput";
+import Recaptcha from "@/components/Recaptcha"
 extend("password", {
   params: ["target"],
   validate(value, { target }) {
@@ -65,8 +69,13 @@ export default {
   components: {
     ValidationObserver,
     TextInput,
+    Recaptcha,
+  },
+  mounted() {
+    this.verified = false
   },
   data: () => ({
+    verified: false,
     error: "",
     success: false,
     showPass: false,
@@ -114,6 +123,10 @@ export default {
         console.log("Validation Error");
         this.error = "Validation Error";
         return;
+      }
+      if (!this.verified) {
+        this.error = "reCAPTCHA not verified"
+        return
       }
       const newEmail = this.info.Account[0].value;
       const newPass = this.info.Account[1].value;
