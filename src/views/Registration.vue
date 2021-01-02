@@ -35,7 +35,7 @@
       </v-card-text>
       <v-divider />
       <v-card-actions>
-        <Recaptcha :verify='verified = true' :expired='verified = false'/>
+        <Recaptcha :verify='() => verified = true' :expired='() => verified = false'/>
       </v-card-actions>
       <v-card-actions>
         <v-btn dark color="red" @click="submit">Submit</v-btn>

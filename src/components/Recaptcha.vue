@@ -4,6 +4,8 @@
         @verify="verify"
         @expired='expired'
     />
+        <!-- @error='error'
+        @render='render' -->
 </template>
 
 <script>
@@ -23,6 +25,11 @@ export default {
     data: () => ({
         siteKey: SITE_KEY
     }),
+    methods: {
+        error: () =>  console.log("Error occured with Recaptcha"),
+        render: (id) => console.log("rendered Recaptcha", id)
+
+    }
 }
 </script>
 
