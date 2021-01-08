@@ -72,6 +72,43 @@
             >
               Place order
             </v-btn>
+            <v-btn
+              dark
+              class="ma-1"
+              color="blue"
+              @click="sendEmail"
+              v-if="getTotal > 0"
+            >
+              Send Email
+            </v-btn>
+          </div>
+        </template>
+      </v-data-table>
+    </v-card>
+    <!-- Email Template -->
+    <v-card id='orderInShoppingCart' v-show="false">
+      <v-data-table
+        :headers="headers"
+        :items="cart"
+        class="elevation-1"
+        disable-pagination
+        hide-default-footer
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Order</v-toolbar-title>
+            <v-spacer />
+            <v-toolbar-title class="mx-3"
+              >Total: ${{ getTotal }}</v-toolbar-title
+            >
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.img`]="{ item }">
+          <v-img :src="item.img" width="50" height="50" contain />
+        </template>
+        <template slot="footer">
+          <div class="d-flex justify-end">
+            <div class="ma-3">Total: ${{ getTotal }}</div>
           </div>
         </template>
       </v-data-table>
@@ -82,6 +119,7 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/storage";
+import axios from 'axios'
 
 export default {
   name: "ShoppingCart",
@@ -255,6 +293,37 @@ export default {
     emptyCart() {
       this.cart = []
       this.$store.commit("emptyCart")
+    },
+    async sendEmail() {
+      // Get HTML to print from element
+      const elmt = document.getElementById('orderInShoppingCart');
+      const prtHtml = elmt.html
+      // Get all stylesheets HTML
+      let stylesHtml = '';
+      for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+        stylesHtml += node.outerHTML;
+      }
+
+      const htmlWithCss = `<!DOCTYPE html>
+      <html>
+        <head>
+          ${stylesHtml}
+        </head>
+        <body>
+          ${prtHtml}
+        </body>
+      </html>`;
+
+      const dest = 'http://localhost:5001/smaa-703b3/us-central1/sendMail'
+      const body = {
+          dest:"salman.sharif@mail.utoronto.ca",
+          subject: "Your Order",
+          html: htmlWithCss,
+          text: elmt.innerText
+      }
+      // console.log(dest, body, axios);
+      const res = await axios.post(dest, body)
+      console.log(res);
     },
     async placeOrder() {
       this.error = ''
